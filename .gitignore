@@ -1,0 +1,57 @@
+# ============================================================
+# KIRA HEALTH ASSISTANT - GIT IGNORE
+# ============================================================
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# Database files
+*.sqlite3
+*.db
+
+# Django generated files
+staticfiles/
+media/
+
+# Node.js dependencies
+node_modules/
+
+# Frontend build output
+dist/
+build/
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
+
+# Test and coverage output
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
