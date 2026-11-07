@@ -4,7 +4,7 @@ KIRA Health Assistant - URL Configuration.
 
 from django.contrib import admin
 from django.http import JsonResponse
-from django.urls import path
+from django.urls import include, path
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView,
@@ -37,13 +37,15 @@ def api_root(request):
         ],
     })
 
-
 urlpatterns = [
     # API welcome endpoint
     path("", api_root, name="api-root"),
 
     # Django administration
     path("admin/", admin.site.urls),
+
+    # KIRA account endpoints
+    path("api/accounts/", include("apps.accounts.urls")),
 
     # OpenAPI schema
     path(
