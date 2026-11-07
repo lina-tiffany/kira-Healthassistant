@@ -3,11 +3,9 @@ KIRA Health Assistant - Account URL Routes.
 """
 
 from django.urls import path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from rest_framework_simplejwt.views import TokenRefreshView
 
+from .authentication import EmailTokenObtainPairView
 from .views import (
     RegisterView,
     UserProfileView,
@@ -16,17 +14,15 @@ from .views import (
 
 
 urlpatterns = [
-    # Account registration
     path(
         "register/",
         RegisterView.as_view(),
         name="account-register",
     ),
 
-    # JWT authentication
     path(
         "login/",
-        TokenObtainPairView.as_view(),
+        EmailTokenObtainPairView.as_view(),
         name="account-login",
     ),
 
@@ -36,14 +32,12 @@ urlpatterns = [
         name="token-refresh",
     ),
 
-    # User profile
     path(
         "profile/",
         UserProfileView.as_view(),
         name="account-profile",
     ),
 
-    # Logout
     path(
         "logout/",
         LogoutView.as_view(),
