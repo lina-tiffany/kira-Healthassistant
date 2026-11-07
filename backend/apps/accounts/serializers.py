@@ -15,7 +15,7 @@ User = get_user_model()
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """
-    Validates and creates new KIRA user accounts.
+    Creates new patient accounts securely.
     """
 
     password = serializers.CharField(
@@ -42,7 +42,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "phone_number",
-            "role",
             "preferred_language",
         ]
         read_only_fields = ["id"]
@@ -67,10 +66,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop("password_confirmation")
-
         password = validated_data.pop("password")
 
-        user = User(**validated_data)
+        user = User(
+            **validated_data,
+            role="patient",
+        )
+
         user.set_password(password)
         user.save()
 
