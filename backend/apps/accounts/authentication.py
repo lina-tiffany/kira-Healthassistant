@@ -1,13 +1,14 @@
 """
 KIRA Health Assistant - Email Authentication.
 
-Allows users to authenticate using their email address
-and password instead of their username.
+Allows users to log in using their email address
+and password.
 """
 
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 User = get_user_model()
@@ -18,11 +19,11 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
     Generates JWT tokens using email and password.
     """
 
-    email = serializers.EmailField(write_only=True)
+    username_field = "email"
 
     def validate(self, attrs):
-        email = attrs.get("email", "").strip().lower()
-        password = attrs.get("password")
+        email = attrs["email"].strip().lower()
+        password = attrs["password"]
 
         try:
             user = User.objects.get(email__iexact=email)
@@ -47,9 +48,18 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
                 {"detail": "This account is inactive."}
             )
 
+        self.user = authenticated_user
         refresh = self.get_token(authenticated_user)
 
         return {
             "refresh": str(refresh),
             "access": str(refresh.access_token),
         }
+
+
+class EmailTokenObtainPairView(TokenObtainPairView):
+    """
+    Login endpoint that accepts email instead of username.
+    """
+
+    serializer_class = EmailTokenObtainPairSerializer
