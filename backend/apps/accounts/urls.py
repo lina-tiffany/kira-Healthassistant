@@ -11,36 +11,51 @@ from .views import (
     UserProfileView,
     LogoutView,
 )
+from .admin_views import (
+    AdminUserListView,
+    AdminUserDetailView,
+)
 
 
 urlpatterns = [
+    # Public registration and authentication
     path(
         "register/",
         RegisterView.as_view(),
         name="account-register",
     ),
-
     path(
         "login/",
         EmailTokenObtainPairView.as_view(),
         name="account-login",
     ),
-
     path(
         "token/refresh/",
         TokenRefreshView.as_view(),
         name="token-refresh",
     ),
 
+    # Authenticated user profile
     path(
         "profile/",
         UserProfileView.as_view(),
         name="account-profile",
     ),
-
     path(
         "logout/",
         LogoutView.as_view(),
         name="account-logout",
+    ),
+
+    # Administrator user management
+    path(
+        "admin/users/",
+        AdminUserListView.as_view(),
+        name="admin-user-list",
+    ),
+    path(
+        "admin/users/<uuid:id>/",
+        AdminUserDetailView.as_view(),
+        name="admin-user-detail",
     ),
 ]
