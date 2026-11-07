@@ -15,7 +15,10 @@ from .admin_views import (
     AdminUserListView,
     AdminUserDetailView,
 )
-
+from .email_views import (
+    SendVerificationEmailView,
+    VerifyEmailView,
+)
 
 urlpatterns = [
     # Public registration and authentication
@@ -57,5 +60,17 @@ urlpatterns = [
         "admin/users/<uuid:id>/",
         AdminUserDetailView.as_view(),
         name="admin-user-detail",
+    ),
+
+        # Email verification
+    path(
+        "email/send-verification/",
+        SendVerificationEmailView.as_view(),
+        name="account-send-verification",
+    ),
+    path(
+        "email/verify/",
+        VerifyEmailView.as_view(),
+        name="account-verify-email",
     ),
 ]
