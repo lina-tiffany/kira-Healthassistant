@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
-    """Displays account information to administrators."""
+    """Displays and manages user accounts for administrators."""
 
     class Meta:
         model = User
@@ -36,6 +36,8 @@ class AdminUserSerializer(serializers.ModelSerializer):
 
         read_only_fields = [
             "id",
+            "is_staff",
+            "is_superuser",
             "date_joined",
             "created_at",
         ]
