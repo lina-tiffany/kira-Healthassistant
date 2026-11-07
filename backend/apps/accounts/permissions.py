@@ -47,7 +47,7 @@ class IsPharmacy(BasePermission):
 
 
 class IsAdministrator(BasePermission):
-    """Allow access to administrator accounts only."""
+    """Allow administrator accounts and Django superusers."""
 
     message = "Administrator privileges are required."
 
@@ -55,9 +55,11 @@ class IsAdministrator(BasePermission):
         return (
             request.user
             and request.user.is_authenticated
-            and request.user.role == "administrator"
+            and (
+                request.user.role == "administrator"
+                or request.user.is_superuser
+            )
         )
-
 
 class IsCaregiverOrAdministrator(BasePermission):
     """Allow caregivers and administrators."""
