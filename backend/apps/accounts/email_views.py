@@ -1,13 +1,15 @@
 """
 KIRA Health Assistant - Email Verification API.
 
-Handles sending and confirming email verification links.
+Handles sending, resending, and confirming verification links.
 """
 
 import logging
 
 from rest_framework import permissions, status
+from rest_framework.exceptions import Throttled
 from rest_framework.response import Response
+from rest_framework.throttling import SimpleRateThrottle
 from rest_framework.views import APIView
 
 from .email_service import send_verification_email
@@ -17,12 +19,31 @@ from .verification import verify_email_token
 logger = logging.getLogger(__name__)
 
 
+class VerificationEmailRateThrottle(SimpleRateThrottle):
+    """
+    Limit verification email requests to five per user per hour.
+    """
+
+    scope = "verification_email"
+    rate = "5/hour"
+
+    def get_cache_key(self, request, view):
+        if not request.user.is_authenticated:
+            return None
+
+        return self.cache_format % {
+            "scope": self.scope,
+            "ident": request.user.pk,
+        }
+
+
 class SendVerificationEmailView(APIView):
     """
     Send a verification link to the authenticated user.
     """
 
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [VerificationEmailRateThrottle]
 
     def post(self, request):
         user = request.user
@@ -88,6 +109,10 @@ class VerifyEmailView(APIView):
             )
 
         return Response(
-            {"detail": "Your email address has been verified successfully."},
+            {
+                "detail": (
+                    "Your email address has been verified successfully."
+                )
+            },
             status=status.HTTP_200_OK,
         )
