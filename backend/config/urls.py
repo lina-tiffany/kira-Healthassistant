@@ -38,6 +38,7 @@ def api_root(request):
     })
 
 urlpatterns = [
+    path("api/symptoms/", include("apps.symptoms.urls")),
     path("api/medications/", include("apps.medications.urls")),
     path("api/health-records/", include("apps.health_records.urls")),
     # API welcome endpoint
