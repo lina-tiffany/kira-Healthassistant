@@ -59,6 +59,8 @@ INSTALLED_APPS = [
 
     # KIRA applications
     "apps.accounts",
+    "apps.appointments",
+    "apps.wellness",
     "apps.symptoms",
     "apps.medications",
     "apps.health_records",
