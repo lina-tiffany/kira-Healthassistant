@@ -1,4 +1,5 @@
 import { useDashboardData } from "./useDashboardData";
+import MedicationManager from "./MedicationManager";
 import {
   Activity,
   CalendarDays,
@@ -179,6 +180,8 @@ function App() {
             </div>
           )}
 
+          {activePage === "Medications" && <MedicationManager />}
+
           {activePage === "Overview" && (
             <>
               <section className="stats-grid">
@@ -315,7 +318,7 @@ function App() {
             </>
           )}
 
-          {activePage !== "Overview" && (
+          {activePage !== "Overview" && activePage !== "Medications" && (
             <section className="panel page-panel">
               <div className="panel-heading">
                 <div>
