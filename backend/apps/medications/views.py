@@ -1,6 +1,9 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import Count, Q
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Medication, MedicationReminder, MedicationLog
 from .serializers import (
@@ -15,9 +18,7 @@ class MedicationListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Medication.objects.filter(
-            patient__user=self.request.user
-        ).select_related("patient", "created_by")
+        return Medication.objects.filter(patient__user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(
@@ -31,9 +32,7 @@ class MedicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Medication.objects.filter(
-            patient__user=self.request.user
-        ).select_related("patient", "created_by")
+        return Medication.objects.filter(patient__user=self.request.user)
 
 
 class MedicationReminderListCreateView(generics.ListCreateAPIView):
@@ -70,3 +69,27 @@ class MedicationLogListCreateView(generics.ListCreateAPIView):
             patient__user=self.request.user,
         )
         serializer.save(medication=medication)
+
+
+class MedicationAdherenceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        logs = MedicationLog.objects.filter(
+            medication__patient__user=request.user
+        )
+
+        summary = logs.aggregate(
+            total=Count("id"),
+            taken=Count("id", filter=Q(status="taken")),
+            missed=Count("id", filter=Q(status="missed")),
+            skipped=Count("id", filter=Q(status="skipped")),
+        )
+
+        total = summary["total"]
+        summary["adherence_percentage"] = (
+            round(summary["taken"] / total * 100, 2)
+            if total else 0
+        )
+
+        return Response(summary)

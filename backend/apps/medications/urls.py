@@ -4,6 +4,7 @@ from .views import (
     MedicationDetailView,
     MedicationReminderListCreateView,
     MedicationLogListCreateView,
+    MedicationAdherenceView,
 )
 
 urlpatterns = [
@@ -11,4 +12,5 @@ urlpatterns = [
     path("<int:pk>/", MedicationDetailView.as_view(), name="medication-detail"),
     path("reminders/", MedicationReminderListCreateView.as_view(), name="medication-reminders"),
     path("logs/", MedicationLogListCreateView.as_view(), name="medication-logs"),
+    path("adherence/", MedicationAdherenceView.as_view(), name="medication-adherence"),
 ]
