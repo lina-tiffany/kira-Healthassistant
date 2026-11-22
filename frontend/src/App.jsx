@@ -1,6 +1,7 @@
 import { useDashboardData } from "./useDashboardData";
 import MedicationManager from "./MedicationManager";
 import SymptomTracker from "./SymptomTracker";
+import HealthRecords from "./HealthRecords";
 import {
   Activity,
   CalendarDays,
@@ -183,6 +184,7 @@ function App() {
 
           {activePage === "Medications" && <MedicationManager />}
           {activePage === "Symptoms" && <SymptomTracker />}
+          {activePage === "Health records" && <HealthRecords />}
 
           {activePage === "Overview" && (
             <>
@@ -320,7 +322,7 @@ function App() {
             </>
           )}
 
-          {activePage !== "Overview" && activePage !== "Medications" && activePage !== "Symptoms" && (
+          {activePage !== "Overview" && activePage !== "Medications" && activePage !== "Symptoms" && activePage !== "Health records" && (
             <section className="panel page-panel">
               <div className="panel-heading">
                 <div>

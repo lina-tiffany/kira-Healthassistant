@@ -937,3 +937,157 @@
   .symptom-wide, .symptom-severity-field { grid-column: auto; }
   .symptom-form { padding: 15px; }
 }
+
+/* Health records */
+.health-records-page { display: flex; flex-direction: column; gap: 21px; }
+.health-records-heading, .hr-form-heading, .hr-list-heading {
+  display: flex; align-items: center; justify-content: space-between; gap: 15px;
+}
+.health-records-heading h2 { margin: 7px 0; color: #172b4d; font-size: 26px; }
+.health-records-heading p, .hr-form-heading p {
+  margin: 0; color: #78869a; font-size: 13px;
+}
+.hr-primary-button, .hr-secondary-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 0; border-radius: 9px; padding: 11px 16px;
+  font-weight: 600; cursor: pointer; font-size: 13px;
+}
+.hr-primary-button { background: #087f8c; color: white; }
+.hr-primary-button:hover { background: #066b76; }
+.hr-primary-button:disabled { opacity: .6; cursor: wait; }
+.hr-secondary-button { background: #edf1f5; color: #45556b; }
+.health-records-overview {
+  display: flex; align-items: center; gap: 14px; padding: 18px;
+  border: 1px solid #e5edf0; background: white; border-radius: 12px;
+}
+.hr-overview-icon {
+  width: 45px; height: 45px; display: grid; place-items: center;
+  border-radius: 11px; background: #eaf6f5; color: #087f8c;
+}
+.health-records-overview strong { color: #172b4d; font-size: 14px; }
+.health-records-overview p { margin: 5px 0 0; color: #8491a2; font-size: 12px; }
+.hr-message {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #eaf6f5; color: #08717b; border-radius: 9px;
+  padding: 12px 15px; font-size: 13px;
+}
+.hr-message button, .hr-form-heading button {
+  border: 0; background: transparent; color: inherit; cursor: pointer;
+}
+.hr-form {
+  display: flex; flex-direction: column; gap: 20px; padding: 22px;
+  background: white; border: 1px solid #e6edf1; border-radius: 13px;
+}
+.hr-form-heading h3, .hr-list-heading h3 {
+  margin: 0 0 5px; color: #172b4d; font-size: 17px;
+}
+.hr-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.hr-form-grid label {
+  display: flex; flex-direction: column; gap: 7px;
+  color: #53647a; font-size: 12px; font-weight: 600;
+}
+.hr-form-grid input:not([type="file"]), .hr-form-grid select,
+.hr-form-grid textarea {
+  box-sizing: border-box; width: 100%; padding: 11px;
+  border: 1px solid #dce4eb; border-radius: 8px;
+  color: #26384e; background: white; font: inherit; font-size: 13px;
+}
+.hr-form-grid input:focus, .hr-form-grid select:focus,
+.hr-form-grid textarea:focus {
+  outline: 2px solid #b9e1e2; border-color: #087f8c;
+}
+.hr-wide { grid-column: 1 / -1; }
+.hr-file-field { gap: 9px !important; }
+.hr-upload-area {
+  position: relative; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+  padding: 22px; border: 1px dashed #b9cbd3; border-radius: 10px;
+  background: #f8fbfc; color: #087f8c; text-align: center;
+}
+.hr-upload-area strong { color: #34475d; font-size: 13px; overflow-wrap: anywhere; }
+.hr-upload-area small { color: #8995a5; font-size: 11px; }
+.hr-upload-area input {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; cursor: pointer;
+}
+.hr-file-field > small { color: #8995a5; font-weight: 400; }
+.hr-form-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.hr-toolbar { display: flex; gap: 12px; }
+.hr-search {
+  flex: 1; display: flex; align-items: center; gap: 9px;
+  padding: 0 12px; border: 1px solid #dce4eb; border-radius: 9px;
+  background: white; color: #8995a5;
+}
+.hr-search input {
+  width: 100%; border: 0; outline: 0; padding: 12px 0;
+  background: transparent; color: #26384e; font-size: 13px;
+}
+.hr-toolbar > select {
+  min-width: 170px; padding: 10px; border: 1px solid #dce4eb;
+  border-radius: 9px; background: white; color: #53647a; font-size: 12px;
+}
+.hr-list-heading { margin-top: 5px; }
+.hr-list-heading h3 { margin: 0; }
+.hr-list-heading span { color: #8491a2; font-size: 12px; }
+.hr-record-list { display: flex; flex-direction: column; gap: 13px; }
+.hr-record-card {
+  display: flex; align-items: flex-start; gap: 14px; padding: 18px;
+  background: white; border: 1px solid #e7edf2; border-radius: 12px;
+}
+.hr-record-icon {
+  flex-shrink: 0; width: 42px; height: 42px; display: grid;
+  place-items: center; border-radius: 10px; color: #087f8c; background: #eaf6f5;
+}
+.hr-record-content { flex: 1; min-width: 0; }
+.hr-record-title-row {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+}
+.hr-record-type {
+  color: #087f8c; background: #eaf6f5; border-radius: 20px;
+  padding: 4px 9px; font-size: 10px;
+}
+.hr-record-title-row h3 { margin: 9px 0 5px; color: #172b4d; font-size: 15px; }
+.hr-record-date { color: #8995a5; font-size: 11px; white-space: nowrap; }
+.hr-record-content > p {
+  color: #64748b; font-size: 13px; line-height: 1.55; margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+.hr-record-meta {
+  display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 10px 0;
+  color: #8491a2; font-size: 11px;
+}
+.hr-record-detail {
+  color: #64748b; font-size: 12px; line-height: 1.5; margin: 7px 0;
+  overflow-wrap: anywhere;
+}
+.hr-record-detail strong { color: #40536a; }
+.hr-record-actions {
+  display: flex; flex-wrap: wrap; gap: 15px; margin-top: 13px;
+  padding-top: 12px; border-top: 1px solid #edf0f3;
+}
+.hr-record-actions button {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 0; background: transparent; color: #087f8c;
+  font-size: 12px; font-weight: 600; cursor: pointer; padding: 3px 0;
+}
+.hr-record-actions .hr-delete { color: #c05b5b; }
+.hr-empty {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 36px 20px; text-align: center; color: #8491a2;
+  background: white; border: 1px dashed #dce5eb; border-radius: 12px;
+}
+.hr-empty strong { color: #26384e; }
+.hr-empty p { margin: 0 0 8px; font-size: 13px; }
+.hr-disclaimer { color: #8a97a8; font-size: 11px; line-height: 1.5; }
+@media (max-width: 700px) {
+  .health-records-heading { align-items: flex-start; flex-direction: column; }
+  .hr-toolbar { flex-direction: column; }
+  .hr-toolbar > select { width: 100%; }
+}
+@media (max-width: 520px) {
+  .hr-form-grid { grid-template-columns: 1fr; }
+  .hr-wide { grid-column: auto; }
+  .hr-form { padding: 15px; }
+  .hr-record-title-row { flex-direction: column; }
+  .hr-record-date { order: -1; }
+}
