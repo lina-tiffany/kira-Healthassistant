@@ -47,6 +47,7 @@ urlpatterns = [
     path("api/caregivers/", include("apps.caregivers.urls")),
     path("api/pharmacy/", include("apps.pharmacy.urls")),
     path("api/orders/", include("apps.orders.urls")),
+    path("api/analytics/", include("apps.analytics.urls")),
     # API welcome endpoint
     path("", api_root, name="api-root"),
 

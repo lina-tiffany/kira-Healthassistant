@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "apps.caregivers",
     "apps.pharmacy",
     "apps.orders",
+    "apps.analytics",
 ]
 
 
