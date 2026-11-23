@@ -48,8 +48,7 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
                 {"detail": "This account is inactive."}
             )
 
-
-            if not authenticated_user.is_email_verified:
+        if not authenticated_user.is_email_verified:
             raise serializers.ValidationError(
                 {
                     "detail": (
@@ -65,6 +64,7 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
             "refresh": str(refresh),
             "access": str(refresh.access_token),
         }
+
 
 class EmailTokenObtainPairView(TokenObtainPairView):
     """
