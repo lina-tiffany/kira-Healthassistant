@@ -4,6 +4,8 @@ import SymptomTracker from "./SymptomTracker";
 import HealthRecords from "./HealthRecords";
 import Appointments from "./Appointments";
 import Wellness from "./Wellness";
+import NotificationCenter from "./NotificationCenter";
+import api from "./api";
 import {
   Activity,
   CalendarDays,
@@ -16,16 +18,33 @@ import {
   Settings,
   ShieldCheck,
   Stethoscope,
+  Bell,
   UserRound,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./App.css";
 
 function App() {
   const { data, loading, error } = useDashboardData();
   const [activePage, setActivePage] = useState("Overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const refreshUnreadCount = useCallback(async () => {
+    try {
+      const response = await api.get("/notifications/unread-count/");
+      setUnreadCount(response.data.unread_count || 0);
+    } catch {
+      // Notifications remain available when the count cannot be loaded.
+    }
+  }, []);
+
+  useEffect(() => {
+    refreshUnreadCount();
+    const interval = window.setInterval(refreshUnreadCount, 60000);
+    return () => window.clearInterval(interval);
+  }, [refreshUnreadCount]);
 
   const navigation = [
     { label: "Overview", icon: Home },
@@ -34,6 +53,7 @@ function App() {
     { label: "Health records", icon: ClipboardList },
     { label: "Appointments", icon: CalendarDays },
     { label: "Wellness", icon: HeartPulse },
+    { label: "Notifications", icon: Bell },
   ];
 
   const stats = [
@@ -108,6 +128,11 @@ function App() {
             >
               <Icon size={19} />
               <span>{label}</span>
+              {label === "Notifications" && unreadCount > 0 && (
+                <span className="nav-unread-count">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
             </button>
           ))}
         </nav>
@@ -152,11 +177,26 @@ function App() {
             <Menu />
           </button>
           <div className="breadcrumb">Patient portal / {activePage}</div>
-          <div className="topbar-user">
+          <div className="topbar-actions">
+            <button
+              className="topbar-notification"
+              onClick={() => setActivePage("Notifications")}
+              aria-label={`${unreadCount} unread notifications`}
+              title="Notifications"
+            >
+              <Bell size={20} />
+              {unreadCount > 0 && (
+                <span className="topbar-notification-count">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
+            </button>
+            <div className="topbar-user">
             <div className="user-avatar">
               <UserRound size={19} />
             </div>
             <span>My account</span>
+            </div>
           </div>
         </header>
 
@@ -189,6 +229,9 @@ function App() {
           {activePage === "Health records" && <HealthRecords />}
           {activePage === "Appointments" && <Appointments />}
           {activePage === "Wellness" && <Wellness />}
+          {activePage === "Notifications" && (
+            <NotificationCenter onUnreadChange={setUnreadCount} />
+          )}
 
           {activePage === "Overview" && (
             <>
@@ -326,7 +369,7 @@ function App() {
             </>
           )}
 
-          {activePage !== "Overview" && activePage !== "Medications" && activePage !== "Symptoms" && activePage !== "Health records" && activePage !== "Appointments" && activePage !== "Wellness" && (
+          {activePage !== "Overview" && activePage !== "Medications" && activePage !== "Symptoms" && activePage !== "Health records" && activePage !== "Appointments" && activePage !== "Wellness" && activePage !== "Notifications" && (
             <section className="panel page-panel">
               <div className="panel-heading">
                 <div>
