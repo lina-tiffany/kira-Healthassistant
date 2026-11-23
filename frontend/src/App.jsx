@@ -3,6 +3,7 @@ import MedicationManager from "./MedicationManager";
 import SymptomTracker from "./SymptomTracker";
 import HealthRecords from "./HealthRecords";
 import Appointments from "./Appointments";
+import Wellness from "./Wellness";
 import {
   Activity,
   CalendarDays,
@@ -187,7 +188,7 @@ function App() {
           {activePage === "Symptoms" && <SymptomTracker />}
           {activePage === "Health records" && <HealthRecords />}
           {activePage === "Appointments" && <Appointments />}
-          {activePage === "Appointments" && <Appointments />}
+          {activePage === "Wellness" && <Wellness />}
 
           {activePage === "Overview" && (
             <>
@@ -325,7 +326,7 @@ function App() {
             </>
           )}
 
-          {activePage !== "Overview" && activePage !== "Medications" && activePage !== "Symptoms" && activePage !== "Health records" && activePage !== "Appointments" && (
+          {activePage !== "Overview" && activePage !== "Medications" && activePage !== "Symptoms" && activePage !== "Health records" && activePage !== "Appointments" && activePage !== "Wellness" && (
             <section className="panel page-panel">
               <div className="panel-heading">
                 <div>
