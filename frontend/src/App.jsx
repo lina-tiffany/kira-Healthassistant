@@ -14,6 +14,8 @@ import {
   Home,
   LogOut,
   Menu,
+  Moon,
+  Sun,
   Pill,
   Settings,
   ShieldCheck,
@@ -32,6 +34,13 @@ function App() {
   const [activePage, setActivePage] = useState("Overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem("kira_theme") === "dark"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("kira_theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
 
   const refreshUnreadCount = useCallback(async () => {
     try {
@@ -86,7 +95,7 @@ function App() {
   ];
 
   function formatDate(value) {
-    if (!value) return "Date not provided";
+    if (!value) return t("Date not provided");
     const date = new Date(value);
     return Number.isNaN(date.getTime())
       ? value
@@ -94,11 +103,12 @@ function App() {
           day: "numeric",
           month: "short",
           year: "numeric",
+          ...(language === "fr" ? { localeMatcher: "lookup" } : {}),
         });
   }
 
   return (
-    <div className="kira-app">
+    <div className={`kira-app ${darkMode ? "dark-mode" : ""}`}>
       <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
         <div className="brand">
           <div className="brand-icon">
@@ -106,12 +116,12 @@ function App() {
           </div>
           <div>
             <h2>KIRA</h2>
-            <span>HEALTH ASSISTANT</span>
+            <span>{t("HEALTH ASSISTANT")}</span>
           </div>
           <button
             className="mobile-close"
             onClick={() => setSidebarOpen(false)}
-            aria-label="Close navigation"
+            aria-label={t("Close navigation")}
           >
             <X />
           </button>
@@ -160,9 +170,14 @@ function App() {
               <span>{t("Your health information is private.")}</span>
             </div>
           </div>
-          <button className="nav-item">
-            <Settings size={19} />
-            <span>{t("Settings")}</span>
+          <button
+            className="nav-item"
+            onClick={() => setDarkMode((current) => !current)}
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {darkMode ? <Sun size={19} /> : <Moon size={19} />}
+            <span>{darkMode ? "Light mode" : "Dark mode"}</span>
           </button>
           <button className="nav-item" onClick={() => {
             localStorage.removeItem("kira_access_token");
@@ -187,7 +202,7 @@ function App() {
           <button
             className="menu-toggle"
             onClick={() => setSidebarOpen(true)}
-            aria-label="Open navigation"
+            aria-label={t("Open navigation")}
           >
             <Menu />
           </button>
@@ -197,7 +212,7 @@ function App() {
               className="topbar-notification"
               onClick={() => setActivePage("Notifications")}
               aria-label={`${unreadCount} unread notifications`}
-              title="Notifications"
+              title={t("Notifications")}
             >
               <Bell size={20} />
               {unreadCount > 0 && (
@@ -210,7 +225,7 @@ function App() {
             <div className="user-avatar">
               <UserRound size={19} />
             </div>
-            <span>My account</span>
+            <span>{t("My account")}</span>
             </div>
           </div>
         </header>
@@ -218,14 +233,14 @@ function App() {
         <div className="dashboard-content">
           <section className="welcome-section">
             <div>
-              <span className="eyebrow">YOUR PERSONAL HEALTH SPACE</span>
+              <span className="eyebrow">{t("YOUR PERSONAL HEALTH SPACE")}</span>
               <h1>
                 {activePage === "Overview"
-                  ? "Welcome to KIRA"
+                  ? t("Welcome to KIRA")
                   : activePage}
               </h1>
               <p>
-                Keep track of your health, manage your care, and stay informed.
+                {t("Keep track of your health, manage your care, and stay informed.")}
               </p>
             </div>
             <div className="welcome-icon">
@@ -257,7 +272,7 @@ function App() {
                       <Icon size={22} />
                     </div>
                     <div>
-                      <p>{label}</p>
+                      <p>{t(label)}</p>
                       <h2>{loading ? "—" : value}</h2>
                     </div>
                   </article>
@@ -268,49 +283,49 @@ function App() {
                 <article className="panel">
                   <div className="panel-heading">
                     <div>
-                      <h2>My medications</h2>
-                      <p>Your medication list</p>
+                      <h2>{t("My medications")}</h2>
+                      <p>{t("Your medication list")}</p>
                     </div>
                     <Pill size={21} />
                   </div>
                   {loading ? (
-                    <p className="empty-state">Loading medications...</p>
+                    <p className="empty-state">{t("Loading medications...")}</p>
                   ) : data.medications.length ? (
                     data.medications.slice(0, 5).map((item, index) => (
                       <div className="data-row" key={item.id || index}>
                         <div className="row-icon"><Pill size={18} /></div>
                         <div className="row-details">
                           <strong>
-                            {item.name || item.medication_name || item.medicine_name || "Medication"}
+                            {item.name || item.medication_name || item.medicine_name || t("Medication")}
                           </strong>
                           <span>
-                            {item.dosage || item.frequency || "Dosage not specified"}
+                            {item.dosage || item.frequency || t("Dosage not specified")}
                           </span>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="empty-state">No medications recorded yet.</p>
+                    <p className="empty-state">{t("No medications recorded yet.")}</p>
                   )}
                 </article>
 
                 <article className="panel">
                   <div className="panel-heading">
                     <div>
-                      <h2>Upcoming appointments</h2>
-                      <p>Your scheduled visits</p>
+                      <h2>{t("Upcoming appointments")}</h2>
+                      <p>{t("Your scheduled visits")}</p>
                     </div>
                     <CalendarDays size={21} />
                   </div>
                   {loading ? (
-                    <p className="empty-state">Loading appointments...</p>
+                    <p className="empty-state">{t("Loading appointments...")}</p>
                   ) : data.appointments.length ? (
                     data.appointments.slice(0, 5).map((item, index) => (
                       <div className="data-row" key={item.id || index}>
                         <div className="row-icon"><CalendarDays size={18} /></div>
                         <div className="row-details">
                           <strong>
-                            {item.title || item.reason || item.doctor_name || "Appointment"}
+                            {item.title || item.reason || item.doctor_name || t("Appointment")}
                           </strong>
                           <span>
                             {formatDate(item.appointment_date || item.date || item.scheduled_at)}
@@ -319,49 +334,49 @@ function App() {
                       </div>
                     ))
                   ) : (
-                    <p className="empty-state">No appointments recorded yet.</p>
+                    <p className="empty-state">{t("No appointments recorded yet.")}</p>
                   )}
                 </article>
 
                 <article className="panel">
                   <div className="panel-heading">
                     <div>
-                      <h2>Recent symptoms</h2>
-                      <p>Your symptom history</p>
+                      <h2>{t("Recent symptoms")}</h2>
+                      <p>{t("Your symptom history")}</p>
                     </div>
                     <Activity size={21} />
                   </div>
                   {loading ? (
-                    <p className="empty-state">Loading symptoms...</p>
+                    <p className="empty-state">{t("Loading symptoms...")}</p>
                   ) : data.symptoms.length ? (
                     data.symptoms.slice(0, 5).map((item, index) => (
                       <div className="data-row" key={item.id || index}>
                         <div className="row-icon"><Activity size={18} /></div>
                         <div className="row-details">
                           <strong>
-                            {item.name || item.symptom_name || item.symptom || "Symptom entry"}
+                            {item.name || item.symptom_name || item.symptom || t("Symptom entry")}
                           </strong>
                           <span>
-                            {item.severity || "Severity not specified"}
+                            {item.severity || t("Severity not specified")}
                           </span>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="empty-state">No symptoms recorded yet.</p>
+                    <p className="empty-state">{t("No symptoms recorded yet.")}</p>
                   )}
                 </article>
 
                 <article className="panel">
                   <div className="panel-heading">
                     <div>
-                      <h2>Wellness</h2>
-                      <p>Your wellbeing activity</p>
+                      <h2>{t("Wellness")}</h2>
+                      <p>{t("Your wellbeing activity")}</p>
                     </div>
                     <HeartPulse size={21} />
                   </div>
                   {loading ? (
-                    <p className="empty-state">Loading wellness data...</p>
+                    <p className="empty-state">{t("Loading wellness data...")}</p>
                   ) : data.wellness.length ? (
                     data.wellness.slice(0, 5).map((item, index) => (
                       <div className="data-row" key={item.id || index}>
@@ -377,7 +392,7 @@ function App() {
                       </div>
                     ))
                   ) : (
-                    <p className="empty-state">No wellness entries yet.</p>
+                    <p className="empty-state">{t("No wellness entries yet.")}</p>
                   )}
                 </article>
               </section>
@@ -389,18 +404,18 @@ function App() {
               <div className="panel-heading">
                 <div>
                   <h2>{activePage}</h2>
-                  <p>Your KIRA health information</p>
+                  <p>{t("Your KIRA health information")}</p>
                 </div>
               </div>
               <p className="empty-state">
-                This section is being prepared. Your health information will appear here as we complete this module.
+                {t("This section is being prepared. Your health information will appear here as we complete this module.")}
               </p>
             </section>
           )}
 
           <footer className="dashboard-footer">
-            <span>KIRA Health Assistant</span>
-            <span>Supporting your health journey, every day.</span>
+            <span>{t("KIRA Health Assistant")}</span>
+            <span>{t("Supporting your health journey, every day.")}</span>
           </footer>
         </div>
       </main>

@@ -174,7 +174,7 @@ export default function MedicationManager() {
 
       <div className="medication-summary">
         <div>
-          <span>Active medications</span>
+          <span>{t("Active medications")}</span>
           <strong>{loading ? "—" : medications.filter(m => m.is_active).length}</strong>
         </div>
         <div>
@@ -272,9 +272,9 @@ export default function MedicationManager() {
                     : "No reminder set"}
                 </div>
                 <div className="medication-card-actions">
-                  <button onClick={() => recordDose(medication.id, "taken")}><CheckCircle size={15} /> Mark taken</button>
-                  <button onClick={() => startEdit(medication)}><Pencil size={15} /> Edit</button>
-                  <button onClick={() => deleteMedication(medication.id)} className="med-delete"><Trash2 size={15} /> Delete</button>
+                  <button onClick={() => recordDose(medication.id, "taken")}><CheckCircle size={15} /> {t("Mark taken")}</button>
+                  <button onClick={() => startEdit(medication)}><Pencil size={15} /> {t("Edit")}</button>
+                  <button onClick={() => deleteMedication(medication.id)} className="med-delete"><Trash2 size={15} /> {t("Delete")}</button>
                 </div>
               </article>
             ))}

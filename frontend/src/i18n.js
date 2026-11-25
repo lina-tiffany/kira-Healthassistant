@@ -28,6 +28,18 @@ export const translations = {
     "Health overview": "Health overview",
     "Recent activity": "Recent activity",
     "View all": "View all",
+    "Welcome back": "Welcome back",
+    "Sign in to continue your health journey.": "Sign in to continue your health journey.",
+    "Email address": "Email address",
+    "Enter your email": "Enter your email",
+    "Password": "Password",
+    "Enter your password": "Enter your password",
+    "Signing in...": "Signing in...",
+    "Sign in": "Sign in",
+    "Your health information is protected.": "Your health information is protected.",
+    "Your health. Your journey. Your KIRA.": "Your health. Your journey. Your KIRA.",
+    "The server did not return an access token.": "The server did not return an access token.",
+    "Login failed. Please check your details.": "Login failed. Please check your details.",
   },
   fr: {
     Overview: "Vue d'ensemble",
@@ -55,6 +67,18 @@ export const translations = {
     "Health overview": "Aperçu de la santé",
     "Recent activity": "Activité récente",
     "View all": "Voir tout",
+    "Welcome back": "Bon retour",
+    "Sign in to continue your health journey.": "Connectez-vous pour poursuivre votre parcours de santé.",
+    "Email address": "Adresse e-mail",
+    "Enter your email": "Saisissez votre adresse e-mail",
+    "Password": "Mot de passe",
+    "Enter your password": "Saisissez votre mot de passe",
+    "Signing in...": "Connexion en cours...",
+    "Sign in": "Se connecter",
+    "Your health information is protected.": "Vos informations de santé sont protégées.",
+    "Your health. Your journey. Your KIRA.": "Votre santé. Votre parcours. Votre KIRA.",
+    "The server did not return an access token.": "Le serveur n'a pas fourni de jeton d'accès.",
+    "Login failed. Please check your details.": "Échec de la connexion. Vérifiez vos identifiants.",
   },
   rw: {
     Overview: "Incamake",
@@ -82,6 +106,18 @@ export const translations = {
     "Health overview": "Incamake y'ubuzima",
     "Recent activity": "Ibikorwa biheruka",
     "View all": "Reba byose",
+    "Welcome back": "Murakaza neza",
+    "Sign in to continue your health journey.": "Injira kugira ngo ukomeze urugendo rwawe rw'ubuzima.",
+    "Email address": "Aderesi ya imeri",
+    "Enter your email": "Andika aderesi ya imeri",
+    "Password": "Ijambo ry'ibanga",
+    "Enter your password": "Andika ijambo ry'ibanga",
+    "Signing in...": "Birimo kwinjira...",
+    "Sign in": "Injira",
+    "Your health information is protected.": "Amakuru yawe y'ubuzima ararinzwe.",
+    "Your health. Your journey. Your KIRA.": "Ubuzima bwawe. Urugendo rwawe. KIRA yawe.",
+    "The server did not return an access token.": "Seriveri ntiyatanze urufunguzo rwo kwinjira.",
+    "Login failed. Please check your details.": "Kwinjira ntibyashobotse. Ongera ugenzure ibyo wanditse.",
   },
 };
 
@@ -122,6 +158,8 @@ export const pageTranslations = {
     "Close form": "Close form",
     "e.g. Headache": "e.g. Headache",
     "Severity:": "Severity:",
+    "Ongoing": "Ongoing",
+    "Resolved": "Resolved",
     "Mild": "Mild",
     "Very severe": "Very severe",
     "e.g. 2 hours, 3 days": "e.g. 2 hours, 3 days",
@@ -349,6 +387,8 @@ export const pageTranslations = {
     "Close form": "Fermer le formulaire",
     "e.g. Headache": "Ex. : Mal de tête",
     "Severity:": "Gravité :",
+    "Ongoing": "En cours",
+    "Resolved": "Résolu",
     "Mild": "Léger",
     "Very severe": "Très grave",
     "e.g. 2 hours, 3 days": "Ex. : 2 heures, 3 jours",
@@ -576,6 +616,8 @@ export const pageTranslations = {
     "Close form": "Funga ifishi",
     "e.g. Headache": "Urugero: Kubabara umutwe",
     "Severity:": "Ubukana:",
+    "Ongoing": "Biracyakomeje",
+    "Resolved": "Byakemutse",
     "Mild": "Byoroheje",
     "Very severe": "Bikomeye cyane",
     "e.g. 2 hours, 3 days": "Urugero: amasaha 2, iminsi 3",
@@ -772,6 +814,129 @@ export const pageTranslations = {
   }
 };
 
+const dashboardTranslations = {
+  en: {
+    "HEALTH ASSISTANT": "HEALTH ASSISTANT",
+    "Close navigation": "Close navigation",
+    "Open navigation": "Open navigation",
+    "My account": "My account",
+    "YOUR PERSONAL HEALTH SPACE": "YOUR PERSONAL HEALTH SPACE",
+    "Welcome to KIRA": "Welcome to KIRA",
+    "Keep track of your health, manage your care, and stay informed.": "Keep track of your health, manage your care, and stay informed.",
+    "Date not provided": "Date not provided",
+    "Your medication list": "Your medication list",
+    "Loading medications...": "Loading medications...",
+    "No medications recorded yet.": "No medications recorded yet.",
+    "Your scheduled visits": "Your scheduled visits",
+    "Loading appointments...": "Loading appointments...",
+    "No appointments recorded yet.": "No appointments recorded yet.",
+    "Recent symptoms": "Recent symptoms",
+    "Your symptom history": "Your symptom history",
+    "Loading symptoms...": "Loading symptoms...",
+    "No symptoms recorded yet.": "No symptoms recorded yet.",
+    "Your wellbeing activity": "Your wellbeing activity",
+    "Loading wellness data...": "Loading wellness data...",
+    "No wellness entries yet.": "No wellness entries yet.",
+    "Your KIRA health information": "Your KIRA health information",
+    "Supporting your health journey, every day.": "Supporting your health journey, every day.",
+    "Medication": "Medication",
+    "Appointment": "Appointment",
+    "Symptom entry": "Symptom entry",
+    "Dosage not specified": "Dosage not specified",
+    "Severity not specified": "Severity not specified",
+    "This section is being prepared. Your health information will appear here as we complete this module.": "This section is being prepared. Your health information will appear here as we complete this module."
+  },
+  fr: {
+    "HEALTH ASSISTANT": "ASSISTANT DE SANTÉ",
+    "Close navigation": "Fermer la navigation",
+    "Open navigation": "Ouvrir la navigation",
+    "My account": "Mon compte",
+    "YOUR PERSONAL HEALTH SPACE": "VOTRE ESPACE SANTÉ PERSONNEL",
+    "Welcome to KIRA": "Bienvenue sur KIRA",
+    "Keep track of your health, manage your care, and stay informed.": "Suivez votre santé, gérez vos soins et restez informé.",
+    "Date not provided": "Date non renseignée",
+    "Your medication list": "Votre liste de médicaments",
+    "Loading medications...": "Chargement des médicaments...",
+    "No medications recorded yet.": "Aucun médicament enregistré pour le moment.",
+    "Your scheduled visits": "Vos rendez-vous programmés",
+    "Loading appointments...": "Chargement des rendez-vous...",
+    "No appointments recorded yet.": "Aucun rendez-vous enregistré pour le moment.",
+    "Recent symptoms": "Symptômes récents",
+    "Your symptom history": "Votre historique des symptômes",
+    "Loading symptoms...": "Chargement des symptômes...",
+    "No symptoms recorded yet.": "Aucun symptôme enregistré pour le moment.",
+    "Your wellbeing activity": "Votre activité de bien-être",
+    "Loading wellness data...": "Chargement des données de bien-être...",
+    "No wellness entries yet.": "Aucune entrée de bien-être pour le moment.",
+    "Your KIRA health information": "Vos informations de santé KIRA",
+    "Supporting your health journey, every day.": "Vous accompagner chaque jour dans votre parcours de santé.",
+    "Medication": "Médicament",
+    "Appointment": "Rendez-vous",
+    "Symptom entry": "Entrée de symptôme",
+    "Dosage not specified": "Posologie non précisée",
+    "Severity not specified": "Gravité non précisée",
+    "This section is being prepared. Your health information will appear here as we complete this module.": "Cette section est en cours de préparation. Vos informations de santé apparaîtront ici lorsque ce module sera terminé."
+  },
+  rw: {
+    "HEALTH ASSISTANT": "UMUFASHA MU BY'UBUZIMA",
+    "Close navigation": "Funga imiyoborere",
+    "Open navigation": "Fungura imiyoborere",
+    "My account": "Konti yanjye",
+    "YOUR PERSONAL HEALTH SPACE": "AHO UGENZURIRA UBIZIMA BWAWE",
+    "Welcome to KIRA": "Murakaza neza kuri KIRA",
+    "Keep track of your health, manage your care, and stay informed.": "Kurikirana ubuzima bwawe, tunganya uko witabwaho kandi ukomeze kumenya amakuru.",
+    "Date not provided": "Itariki ntiyatanzwe",
+    "Your medication list": "Urutonde rw'imiti yawe",
+    "Loading medications...": "Imiti irimo gutegurwa...",
+    "No medications recorded yet.": "Nta miti irandikwa kugeza ubu.",
+    "Your scheduled visits": "Gahunda z'ubuvuzi wateganyije",
+    "Loading appointments...": "Gahunda zirimo gutegurwa...",
+    "No appointments recorded yet.": "Nta gahunda y'ubuvuzi irandikwa kugeza ubu.",
+    "Recent symptoms": "Ibimenyetso biheruka",
+    "Your symptom history": "Amateka y'ibimenyetso by'uburwayi",
+    "Loading symptoms...": "Ibimenyetso birimo gutegurwa...",
+    "No symptoms recorded yet.": "Nta bimenyetso birandikwa kugeza ubu.",
+    "Your wellbeing activity": "Ibikorwa bijyanye n'imibereho myiza yawe",
+    "Loading wellness data...": "Amakuru y'imibereho myiza arimo gutegurwa...",
+    "No wellness entries yet.": "Nta makuru y'imibereho myiza arandikwa kugeza ubu.",
+    "Your KIRA health information": "Amakuru y'ubuzima bwawe muri KIRA",
+    "Supporting your health journey, every day.": "Dushyigikira urugendo rwawe rw'ubuzima buri munsi.",
+    "Medication": "Umuti",
+    "Appointment": "Gahunda y'ubuvuzi",
+    "Symptom entry": "Ikimenyetso cy'uburwayi",
+    "Dosage not specified": "Ingano y'umuti ntiyagaragajwe",
+    "Severity not specified": "Ubukana ntibwagaragajwe",
+    "This section is being prepared. Your health information will appear here as we complete this module.": "Iki gice kirimo gutegurwa. Amakuru yawe y'ubuzima azagaragara hano nitumara kugitunganya."
+  }
+};
+
+const componentTranslations = {
+  en: {
+    "Mark taken": "Mark taken",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Severity:": "Severity:",
+    "Log your mood, sleep, water intake, and activity to begin seeing your progress.": "Log your mood, sleep, water intake, and activity to begin seeing your progress.",
+    "KIRA Health Assistant": "KIRA Health Assistant"
+  },
+  fr: {
+    "Mark taken": "Marquer comme pris",
+    "Edit": "Modifier",
+    "Delete": "Supprimer",
+    "Severity:": "Gravité :",
+    "Log your mood, sleep, water intake, and activity to begin seeing your progress.": "Enregistrez votre humeur, votre sommeil, votre consommation d'eau et vos activités pour suivre vos progrès.",
+    "KIRA Health Assistant": "Assistant de santé KIRA"
+  },
+  rw: {
+    "Mark taken": "Shyira akamenyetso ko wafashe umuti",
+    "Edit": "Hindura",
+    "Delete": "Siba",
+    "Severity:": "Ubukana:",
+    "Log your mood, sleep, water intake, and activity to begin seeing your progress.": "Andika uko wiyumva, amasaha uryama, amazi unywa n'ibikorwa ukora kugira ngo ukurikirane iterambere ryawe.",
+    "KIRA Health Assistant": "Umufasha mu by'Ubuzima KIRA"
+  }
+};
+
 export function useLanguage() {
   const [language, setLanguage] = useState(
     () => localStorage.getItem("kira_language") || "en"
@@ -783,7 +948,7 @@ export function useLanguage() {
     setLanguage(nextLanguage);
   };
 
-  const t = (key) => translations[language]?.[key] || pageTranslations[language]?.[key] || translations.en[key] || pageTranslations.en[key] || key;
+  const t = (key) => translations[language]?.[key] || pageTranslations[language]?.[key] || dashboardTranslations[language]?.[key] || componentTranslations[language]?.[key] || translations.en[key] || pageTranslations.en[key] || dashboardTranslations.en[key] || componentTranslations.en[key] || key;
 
   return { language, changeLanguage, t };
 }

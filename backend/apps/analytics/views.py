@@ -17,16 +17,24 @@ class PatientDashboardView(APIView):
 
     def get(self, request):
         user = request.user
+        patient_profile = getattr(user, "patient_profile", None)
+
+        if patient_profile is None:
+            return Response(
+                {"detail": "A patient profile is required for this dashboard."},
+                status=403,
+            )
+
         today = timezone.localdate()
         week_ago = today - timedelta(days=6)
 
         medications = Medication.objects.filter(
-            patient=user,
+            patient=patient_profile,
             is_active=True,
         )
 
         logs = MedicationLog.objects.filter(
-            medication__patient=user,
+            medication__patient=patient_profile,
             taken_at__date__range=(week_ago, today),
         )
 
@@ -38,19 +46,19 @@ class PatientDashboardView(APIView):
             if total_logs else None
         )
 
-        symptoms = SymptomEntry.objects.filter(patient=user)
+        symptoms = SymptomEntry.objects.filter(patient=patient_profile)
         recent_symptoms = symptoms.filter(onset_date__gte=week_ago)
 
         wellness = WellnessEntry.objects.filter(
-            patient=user,
-            date__range=(week_ago, today),
+            patient=patient_profile,
+            entry_date__range=(week_ago, today),
         )
 
         appointments = Appointment.objects.filter(
-            patient=user,
-            date__gte=today,
+            patient=patient_profile,
+            appointment_date__gte=today,
             status__in=["scheduled", "confirmed"],
-        ).order_by("date", "time")
+        ).order_by("appointment_date", "appointment_time")
 
         symptom_summary = recent_symptoms.aggregate(
             total=Count("id"),
@@ -96,8 +104,8 @@ class PatientDashboardView(APIView):
                     "id": item.id,
                     "provider": item.provider_name,
                     "facility": item.healthcare_facility,
-                    "date": item.date,
-                    "time": item.time,
+                    "date": item.appointment_date,
+                    "time": item.appointment_time,
                     "status": item.status,
                 }
                 for item in appointments[:5]

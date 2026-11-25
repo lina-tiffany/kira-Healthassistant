@@ -2127,3 +2127,94 @@
   color: inherit;
   font: inherit;
 }
+
+/* KIRA dark mode */
+.kira-app.dark-mode {
+  background: #101a20;
+  color: #e5eeee;
+}
+
+.kira-app.dark-mode .sidebar,
+.kira-app.dark-mode .topbar {
+  background: #17252c;
+  border-color: #2b3b42;
+}
+
+.kira-app.dark-mode .brand h2,
+.kira-app.dark-mode .welcome-section h1,
+.kira-app.dark-mode .stat-card h2,
+.kira-app.dark-mode .panel-heading h2,
+.kira-app.dark-mode .medication-heading h2 {
+  color: #e5eeee;
+}
+
+.kira-app.dark-mode .brand span,
+.kira-app.dark-mode .nav-heading,
+.kira-app.dark-mode .breadcrumb,
+.kira-app.dark-mode .welcome-section p,
+.kira-app.dark-mode .stat-card p,
+.kira-app.dark-mode .panel-heading p,
+.kira-app.dark-mode .row-details span,
+.kira-app.dark-mode .empty-state {
+  color: #a1b2b8;
+}
+
+.kira-app.dark-mode .nav-item {
+  color: #b4c3c8;
+}
+
+.kira-app.dark-mode .nav-item:hover,
+.kira-app.dark-mode .nav-item.active {
+  background: #203b3d;
+  color: #62d1c5;
+}
+
+.kira-app.dark-mode .secure-note,
+.kira-app.dark-mode .welcome-icon,
+.kira-app.dark-mode .user-avatar {
+  background: #203b3d;
+  color: #62d1c5;
+}
+
+.kira-app.dark-mode .secure-note span {
+  color: #a1b2b8;
+}
+
+.kira-app.dark-mode .stat-card,
+.kira-app.dark-mode .panel,
+.kira-app.dark-mode .medication-summary > div {
+  background: #17252c;
+  border-color: #2b3b42;
+}
+
+.kira-app.dark-mode .data-row,
+.kira-app.dark-mode .panel-heading {
+  border-color: #2b3b42;
+}
+
+.kira-app.dark-mode .row-details strong {
+  color: #e0ebed;
+}
+
+.kira-app.dark-mode .dashboard-footer {
+  color: #82969d;
+}
+
+.kira-app.dark-mode .med-secondary-button {
+  background: #20323a;
+  color: #d8e5e8;
+  border-color: #3b5059;
+}
+
+.kira-app.dark-mode input,
+.kira-app.dark-mode select,
+.kira-app.dark-mode textarea {
+  background: #20323a;
+  color: #e5eeee;
+  border-color: #40545c;
+}
+
+.kira-app.dark-mode input::placeholder,
+.kira-app.dark-mode textarea::placeholder {
+  color: #9aadb4;
+}

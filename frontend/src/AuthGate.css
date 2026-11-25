@@ -58,3 +58,69 @@
 @media(max-width:480px) {
   .login-card { padding: 30px 23px; }
 }
+
+/* Authentication tabs */
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #edf4f1;
+}
+.auth-tabs button {
+  flex: 1;
+  padding: 11px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #536763;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.auth-tabs button.active {
+  background: white;
+  color: #168c80;
+  box-shadow: 0 2px 8px #234b3b12;
+}
+.auth-switch {
+  margin: 18px 0 0;
+  text-align: center;
+  color: #899a97;
+  font-size: 12px;
+}
+.auth-switch button,
+.auth-link {
+  border: 0;
+  background: none;
+  color: #168c80;
+  font-weight: 700;
+  cursor: pointer;
+}
+.auth-link {
+  display: block;
+  margin: 18px auto 0;
+  font-size: 12px;
+}
+.login-success {
+  color: #168c80;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.login-card form {
+  max-height: 58vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Prevent the authentication card from being clipped on short screens */
+.login-page {
+  box-sizing: border-box;
+  align-items: start;
+}
+
+.login-card {
+  margin-block: auto;
+}

@@ -116,3 +116,57 @@ class VerifyEmailView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class PublicVerificationEmailThrottle(SimpleRateThrottle):
+    """Limit unauthenticated verification requests by IP address."""
+
+    scope = "public_verification_email"
+    rate = "5/hour"
+
+    def get_cache_key(self, request, view):
+        ident = self.get_ident(request)
+        return self.cache_format % {
+            "scope": self.scope,
+            "ident": ident,
+        }
+
+
+class PublicSendVerificationEmailView(APIView):
+    """Allow users to request verification before signing in."""
+
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [PublicVerificationEmailThrottle]
+
+    def post(self, request):
+        email = request.data.get("email", "").strip().lower()
+
+        if not email:
+            return Response(
+                {"detail": "Enter your email address."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+
+        user = User.objects.filter(email__iexact=email).first()
+
+        if user and not user.is_email_verified and user.is_active:
+            try:
+                send_verification_email(user, request)
+            except Exception:
+                logger.exception(
+                    "Public verification email failed for user %s.",
+                    user.pk,
+                )
+
+        return Response(
+            {
+                "detail": (
+                    "If an unverified account exists for this email, "
+                    "a verification email will be sent."
+                )
+            },
+            status=status.HTTP_200_OK,
+        )

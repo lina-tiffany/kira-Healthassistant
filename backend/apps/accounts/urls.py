@@ -17,6 +17,7 @@ from .admin_views import (
 )
 from .email_views import (
     SendVerificationEmailView,
+    PublicSendVerificationEmailView,
     VerifyEmailView,
 )
 
@@ -63,6 +64,11 @@ urlpatterns = [
     ),
 
         # Email verification
+    path(
+        "email/resend/",
+        PublicSendVerificationEmailView.as_view(),
+        name="account-public-resend-verification",
+    ),
     path(
         "email/send-verification/",
         SendVerificationEmailView.as_view(),

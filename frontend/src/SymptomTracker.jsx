@@ -206,7 +206,7 @@ export default function SymptomTracker() {
             </label>
 
             <label className="symptom-severity-field">
-              <span>Severity: <strong>{form.severity}/10 — {severityLabel(Number(form.severity))}</strong></span>
+              <span>{t("Severity:")} <strong>{form.severity}/10 — {severityLabel(Number(form.severity))}</strong></span>
               <input
                 type="range"
                 name="severity"

@@ -342,7 +342,7 @@ function Wellness() {
         <div className="wellness-empty">
           <div>💚</div>
           <strong>{t("Your wellness journey starts here")}</strong>
-          <p>Log your mood, sleep, water intake, and activity to begin seeing your progress.</p>
+          <p>{t("Log your mood, sleep, water intake, and activity to begin seeing your progress.")}</p>
           <button className="wellness-primary-btn" onClick={openNewForm}><Plus size={17} /> {t("Create first entry")}</button>
         </div>
       )}
