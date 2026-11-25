@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Activity, Plus, Pencil, Trash2, CalendarDays, X } from "lucide-react";
 import api from "./api";
+import { useLanguage } from "./i18n";
 
 const emptyForm = {
   symptom_name: "",
@@ -21,6 +22,7 @@ function getList(response) {
 }
 
 export default function SymptomTracker() {
+  const { t } = useLanguage();
   const [entries, setEntries] = useState([]);
   const [analytics, setAnalytics] = useState({});
   const [form, setForm] = useState(emptyForm);
@@ -134,9 +136,9 @@ export default function SymptomTracker() {
     <section className="symptom-page">
       <div className="symptom-heading">
         <div>
-          <span className="eyebrow">HEALTH MONITORING</span>
-          <h2>Symptom tracker</h2>
-          <p>Record how you feel and follow changes in your symptoms over time.</p>
+          <span className="eyebrow">{t("HEALTH MONITORING")}</span>
+          <h2>{t("Symptom tracker")}</h2>
+          <p>{t("Record how you feel and follow changes in your symptoms over time.")}</p>
         </div>
         <button className="sym-primary-button" onClick={openNewForm}>
           <Plus size={17} /> Record symptom
@@ -145,19 +147,19 @@ export default function SymptomTracker() {
 
       <div className="symptom-summary">
         <div>
-          <span>Total records</span>
+          <span>{t("Total records")}</span>
           <strong>{loading ? "—" : analytics.total_entries ?? 0}</strong>
         </div>
         <div>
-          <span>Average severity</span>
+          <span>{t("Average severity")}</span>
           <strong>{loading ? "—" : `${analytics.average_severity ?? 0}/10`}</strong>
         </div>
         <div>
-          <span>Ongoing</span>
+          <span>{t("Ongoing")}</span>
           <strong>{loading ? "—" : analytics.ongoing ?? 0}</strong>
         </div>
         <div>
-          <span>Resolved</span>
+          <span>{t("Resolved")}</span>
           <strong>{loading ? "—" : analytics.resolved ?? 0}</strong>
         </div>
       </div>
@@ -187,7 +189,7 @@ export default function SymptomTracker() {
                 name="symptom_name"
                 value={form.symptom_name}
                 onChange={updateField}
-                placeholder="e.g. Headache"
+                placeholder={t("e.g. Headache")}
                 required
               />
             </label>
@@ -225,16 +227,16 @@ export default function SymptomTracker() {
                 name="duration"
                 value={form.duration}
                 onChange={updateField}
-                placeholder="e.g. 2 hours, 3 days"
+                placeholder={t("e.g. 2 hours, 3 days")}
               />
             </label>
 
             <label>
               Current status
               <select name="status" value={form.status} onChange={updateField}>
-                <option value="ongoing">Ongoing</option>
-                <option value="improving">Improving</option>
-                <option value="resolved">Resolved</option>
+                <option value="ongoing">{t("Ongoing")}</option>
+                <option value="improving">{t("Improving")}</option>
+                <option value="resolved">{t("Resolved")}</option>
               </select>
             </label>
 
@@ -245,7 +247,7 @@ export default function SymptomTracker() {
                 value={form.description}
                 onChange={updateField}
                 rows="3"
-                placeholder="Describe what you are experiencing..."
+                placeholder={t("Describe what you are experiencing...")}
               />
             </label>
 
@@ -256,7 +258,7 @@ export default function SymptomTracker() {
                 value={form.triggers}
                 onChange={updateField}
                 rows="2"
-                placeholder="e.g. Certain foods, activity, stress..."
+                placeholder={t("e.g. Certain foods, activity, stress...")}
               />
             </label>
 
@@ -267,7 +269,7 @@ export default function SymptomTracker() {
                 value={form.associated_symptoms}
                 onChange={updateField}
                 rows="2"
-                placeholder="Other symptoms experienced at the same time..."
+                placeholder={t("Other symptoms experienced at the same time...")}
               />
             </label>
           </div>
@@ -289,19 +291,19 @@ export default function SymptomTracker() {
 
       <div className="symptom-list-heading">
         <div>
-          <h3>Symptom history</h3>
-          <p>Your previously recorded symptoms</p>
+          <h3>{t("Symptom history")}</h3>
+          <p>{t("Your previously recorded symptoms")}</p>
         </div>
         <span>{entries.length} records</span>
       </div>
 
       {loading ? (
-        <p className="symptom-empty">Loading symptom history...</p>
+        <p className="symptom-empty">{t("Loading symptom history...")}</p>
       ) : entries.length === 0 ? (
         <div className="symptom-empty">
           <Activity size={32} />
-          <strong>No symptoms recorded yet</strong>
-          <p>Start tracking your symptoms to build your health history.</p>
+          <strong>{t("No symptoms recorded yet")}</strong>
+          <p>{t("Start tracking your symptoms to build your health history.")}</p>
           <button className="sym-primary-button" onClick={openNewForm}>
             <Plus size={16} /> Record first symptom
           </button>
@@ -326,7 +328,7 @@ export default function SymptomTracker() {
               </div>
 
               <div className="symptom-severity-display">
-                <span>Severity</span>
+                <span>{t("Severity")}</span>
                 <strong>{entry.severity}/10</strong>
                 <div className="symptom-severity-track">
                   <div style={{ width: `${entry.severity * 10}%` }} />

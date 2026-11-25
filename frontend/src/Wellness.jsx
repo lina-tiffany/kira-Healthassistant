@@ -4,6 +4,7 @@ import {
   Smile, Sparkles, Trash2, X, Zap
 } from "lucide-react";
 import api from "./api";
+import { useLanguage } from "./i18n";
 
 const moods = [
   { value: "very_good", label: "Very good", emoji: "😄" },
@@ -36,14 +37,16 @@ function listFrom(response) {
   return [];
 }
 
-function displayDate(value) {
-  if (!value) return "Date unavailable";
-  return new Date(`${value}T00:00:00`).toLocaleDateString(undefined, {
+function displayDate(value, language, t) {
+  if (!value) return t("Date unavailable");
+  const locale = { en: "en-GB", fr: "fr-FR", rw: "rw-RW" }[language] || "en-GB";
+  return new Date(`${value}T00:00:00`).toLocaleDateString(locale, {
     day: "numeric", month: "short", year: "numeric",
   });
 }
 
 function Wellness() {
+  const { t, language } = useLanguage();
   const [entries, setEntries] = useState([]);
   const [summary, setSummary] = useState(null);
   const [form, setForm] = useState(blankForm);
@@ -66,7 +69,7 @@ function Wellness() {
     if (entriesResult.status === "fulfilled") {
       setEntries(listFrom(entriesResult.value));
     } else {
-      setError("Unable to load your wellness history. Please try again.");
+      setError(t("Unable to load your wellness history. Please try again."));
     }
 
     if (summaryResult.status === "fulfilled") {
@@ -128,10 +131,10 @@ function Wellness() {
     try {
       if (editingId) {
         await api.patch(`/wellness/${editingId}/`, payload);
-        setSuccess("Wellness entry updated successfully.");
+        setSuccess(t("Wellness entry updated successfully."));
       } else {
         await api.post("/wellness/", payload);
-        setSuccess("Your wellness entry has been saved.");
+        setSuccess(t("Your wellness entry has been saved."));
       }
 
       setShowForm(false);
@@ -144,27 +147,28 @@ function Wellness() {
         Object.entries(data || {}).map(([key, value]) =>
           `${key.replaceAll("_", " ")}: ${Array.isArray(value) ? value.join(", ") : value}`
         ).join(" ");
-      setError(message || "Could not save this entry. Please check your information.");
+      setError(message || t("Could not save this entry. Please check your information."));
     } finally {
       setSaving(false);
     }
   }
 
   async function deleteEntry(id) {
-    if (!window.confirm("Delete this wellness entry? This cannot be undone.")) return;
+    if (!window.confirm(t("Delete this wellness entry? This cannot be undone."))) return;
 
     setError("");
     try {
       await api.delete(`/wellness/${id}/`);
-      setSuccess("Wellness entry deleted.");
+      setSuccess(t("Wellness entry deleted."));
       await loadData();
     } catch {
-      setError("Could not delete this entry. Please try again.");
+      setError(t("Could not delete this entry. Please try again."));
     }
   }
 
   function moodLabel(value) {
-    return moods.find((mood) => mood.value === value)?.label || value;
+    const label = moods.find((mood) => mood.value === value)?.label || value;
+    return t(label);
   }
 
   function moodEmoji(value) {
@@ -173,25 +177,25 @@ function Wellness() {
 
   const statCards = [
     {
-      label: "Days tracked",
+      label: t("Days tracked"),
       value: summary?.days_tracked ?? 0,
       suffix: "/ 7",
       icon: HeartPulse,
     },
     {
-      label: "Average sleep",
+      label: t("Average sleep"),
       value: summary?.average_sleep_hours ?? "—",
       suffix: " hrs",
       icon: Moon,
     },
     {
-      label: "Average water",
+      label: t("Average water"),
       value: summary?.average_water_intake_liters ?? "—",
       suffix: " L",
       icon: Droplets,
     },
     {
-      label: "Daily activity",
+      label: t("Daily activity"),
       value: summary?.average_activity_minutes == null
         ? "—"
         : Math.round(summary.average_activity_minutes),
@@ -207,12 +211,12 @@ function Wellness() {
     <section className="wellness-page">
       <div className="wellness-intro">
         <div>
-          <span className="wellness-eyebrow"><Sparkles size={14} /> YOUR WELLBEING MATTERS</span>
-          <h2>Take care of yourself, one day at a time.</h2>
-          <p>Track how you feel, understand your habits, and follow your wellness journey.</p>
+          <span className="wellness-eyebrow"><Sparkles size={14} /> {t("YOUR WELLBEING MATTERS")}</span>
+          <h2>{t("Take care of yourself, one day at a time.")}</h2>
+          <p>{t("Track how you feel, understand your habits, and follow your wellness journey.")}</p>
         </div>
         <button className="wellness-primary-btn" onClick={openNewForm}>
-          <Plus size={18} /> Log today's wellness
+          <Plus size={18} /> {t("Log today's wellness")}
         </button>
       </div>
 
@@ -221,8 +225,8 @@ function Wellness() {
 
       <div className="wellness-section-heading">
         <div>
-          <h3>Your seven-day overview</h3>
-          <p>A look at your recent wellness activity</p>
+          <h3>{t("Your seven-day overview")}</h3>
+          <p>{t("A look at your recent wellness activity")}</p>
         </div>
       </div>
 
@@ -242,14 +246,14 @@ function Wellness() {
         <article className="wellness-panel">
           <div className="wellness-panel-heading">
             <div>
-              <h3>Mood distribution</h3>
-              <p>How you've been feeling over the last seven days</p>
+              <h3>{t("Mood distribution")}</h3>
+              <p>{t("How you've been feeling over the last seven days")}</p>
             </div>
             <Smile size={21} />
           </div>
 
           {loading ? (
-            <p className="wellness-muted">Loading your mood summary...</p>
+            <p className="wellness-muted">{t("Loading your mood summary...")}</p>
           ) : moodDistribution.length ? (
             <div className="mood-bars">
               {moods.map((mood) => {
@@ -267,15 +271,15 @@ function Wellness() {
               })}
             </div>
           ) : (
-            <p className="wellness-muted">Start logging your mood to see your progress here.</p>
+            <p className="wellness-muted">{t("Start logging your mood to see your progress here.")}</p>
           )}
         </article>
 
         <article className="wellness-panel wellness-levels">
           <div className="wellness-panel-heading">
             <div>
-              <h3>How you're doing</h3>
-              <p>Average levels from your recent entries</p>
+              <h3>{t("How you're doing")}</h3>
+              <p>{t("Average levels from your recent entries")}</p>
             </div>
             <Zap size={21} />
           </div>
@@ -290,14 +294,14 @@ function Wellness() {
               </div>
             </div>
           ))}
-          <p className="wellness-disclaimer">These are personal tracking indicators, not medical assessments.</p>
+          <p className="wellness-disclaimer">{t("These are personal tracking indicators, not medical assessments.")}</p>
         </article>
       </div>
 
       <div className="wellness-history-heading">
         <div>
-          <h3>Wellness history</h3>
-          <p>Your daily check-ins and personal notes</p>
+          <h3>{t("Wellness history")}</h3>
+          <p>{t("Your daily check-ins and personal notes")}</p>
         </div>
         <button className="wellness-secondary-btn" onClick={openNewForm}>
           <Plus size={16} /> Add entry
@@ -305,7 +309,7 @@ function Wellness() {
       </div>
 
       {loading ? (
-        <div className="wellness-empty">Loading your wellness history...</div>
+        <div className="wellness-empty">{t("Loading your wellness history...")}</div>
       ) : entries.length ? (
         <div className="wellness-history">
           {entries.map((entry) => (
@@ -315,19 +319,19 @@ function Wellness() {
                 <div className="wellness-entry-title">
                   <div>
                     <strong>{moodLabel(entry.mood)}</strong>
-                    <span>{displayDate(entry.entry_date)}</span>
+                    <span>{displayDate(entry.entry_date, language, t)}</span>
                   </div>
                   <div className="wellness-entry-actions">
-                    <button onClick={() => openEditForm(entry)} aria-label="Edit wellness entry"><Pencil size={16} /></button>
-                    <button onClick={() => deleteEntry(entry.id)} aria-label="Delete wellness entry"><Trash2 size={16} /></button>
+                    <button onClick={() => openEditForm(entry)} aria-label={t("Edit wellness entry")}><Pencil size={16} /></button>
+                    <button onClick={() => deleteEntry(entry.id)} aria-label={t("Delete wellness entry")}><Trash2 size={16} /></button>
                   </div>
                 </div>
                 <div className="wellness-entry-metrics">
-                  {entry.sleep_hours != null && <span><Moon size={14} /> {entry.sleep_hours} hrs sleep</span>}
-                  {entry.water_intake_liters != null && <span><Droplets size={14} /> {entry.water_intake_liters} L water</span>}
-                  <span><Activity size={14} /> {entry.physical_activity_minutes} min activity</span>
-                  {entry.energy_level != null && <span><Zap size={14} /> Energy {entry.energy_level}/10</span>}
-                  {entry.stress_level != null && <span>Stress {entry.stress_level}/10</span>}
+                  {entry.sleep_hours != null && <span><Moon size={14} /> {entry.sleep_hours} {t("hrs sleep")}</span>}
+                  {entry.water_intake_liters != null && <span><Droplets size={14} /> {entry.water_intake_liters} {t("L water")}</span>}
+                  <span><Activity size={14} /> {entry.physical_activity_minutes} {t("min activity")}</span>
+                  {entry.energy_level != null && <span><Zap size={14} /> {t("Energy")} {entry.energy_level}/10</span>}
+                  {entry.stress_level != null && <span>{t("Stress")} {entry.stress_level}/10</span>}
                 </div>
                 {entry.notes && <p className="wellness-entry-notes">{entry.notes}</p>}
               </div>
@@ -337,9 +341,9 @@ function Wellness() {
       ) : (
         <div className="wellness-empty">
           <div>💚</div>
-          <strong>Your wellness journey starts here</strong>
+          <strong>{t("Your wellness journey starts here")}</strong>
           <p>Log your mood, sleep, water intake, and activity to begin seeing your progress.</p>
-          <button className="wellness-primary-btn" onClick={openNewForm}><Plus size={17} /> Create first entry</button>
+          <button className="wellness-primary-btn" onClick={openNewForm}><Plus size={17} /> {t("Create first entry")}</button>
         </div>
       )}
 
@@ -348,20 +352,20 @@ function Wellness() {
           <form className="wellness-form" onSubmit={saveEntry} onClick={(event) => event.stopPropagation()}>
             <div className="wellness-form-heading">
               <div>
-                <span className="wellness-eyebrow">DAILY CHECK-IN</span>
-                <h3>{editingId ? "Edit wellness entry" : "How are you feeling today?"}</h3>
+                <span className="wellness-eyebrow">{t("DAILY CHECK-IN")}</span>
+                <h3>{editingId ? t("Edit wellness entry") : t("How are you feeling today?")}</h3>
               </div>
-              <button type="button" onClick={() => setShowForm(false)} aria-label="Close form"><X size={21} /></button>
+              <button type="button" onClick={() => setShowForm(false)} aria-label={t("Close form")}><X size={21} /></button>
             </div>
 
             <div className="wellness-form-grid">
               <label className="wellness-field wellness-field-wide">
-                Entry date
+                {t("Entry date")}
                 <input type="date" name="entry_date" value={form.entry_date} max={today()} onChange={updateField} required />
               </label>
 
               <div className="wellness-field wellness-field-wide">
-                <span>How is your mood?</span>
+                <span>{t("How is your mood?")}</span>
                 <div className="mood-options">
                   {moods.map((mood) => (
                     <button
@@ -371,47 +375,47 @@ function Wellness() {
                       onClick={() => setForm((current) => ({ ...current, mood: mood.value }))}
                     >
                       <span>{mood.emoji}</span>
-                      <small>{mood.label}</small>
+                      <small>{t(mood.label)}</small>
                     </button>
                   ))}
                 </div>
               </div>
 
               <label className="wellness-field">
-                Sleep (hours)
+                {t("Sleep (hours)")}
                 <input type="number" name="sleep_hours" min="0" max="24" step="0.25" placeholder="e.g. 7.5" value={form.sleep_hours} onChange={updateField} />
               </label>
 
               <label className="wellness-field">
-                Water intake (litres)
+                {t("Water intake (litres)")}
                 <input type="number" name="water_intake_liters" min="0" step="0.1" placeholder="e.g. 2" value={form.water_intake_liters} onChange={updateField} />
               </label>
 
               <label className="wellness-field">
-                Physical activity (minutes)
+                {t("Physical activity (minutes)")}
                 <input type="number" name="physical_activity_minutes" min="0" step="1" value={form.physical_activity_minutes} onChange={updateField} />
               </label>
 
               <label className="wellness-field">
-                Energy level (1–10)
+                {t("Energy level (1–10)")}
                 <input type="number" name="energy_level" min="1" max="10" value={form.energy_level} onChange={updateField} />
               </label>
 
               <label className="wellness-field">
-                Stress level (1–10)
+                {t("Stress level (1–10)")}
                 <input type="number" name="stress_level" min="1" max="10" value={form.stress_level} onChange={updateField} />
               </label>
 
               <label className="wellness-field wellness-field-wide">
-                Notes about your day
-                <textarea name="notes" rows="3" placeholder="How was your day? Anything you'd like to remember?" value={form.notes} onChange={updateField} />
+                {t("Notes about your day")}
+                <textarea name="notes" rows="3" placeholder={t("How was your day? Anything you'd like to remember?")} value={form.notes} onChange={updateField} />
               </label>
             </div>
 
             <div className="wellness-form-actions">
-              <button type="button" className="wellness-cancel-btn" onClick={() => setShowForm(false)}>Cancel</button>
+              <button type="button" className="wellness-cancel-btn" onClick={() => setShowForm(false)}>{t("Cancel")}</button>
               <button type="submit" className="wellness-primary-btn" disabled={saving}>
-                {saving ? "Saving..." : editingId ? "Update entry" : "Save wellness entry"}
+                {saving ? t("Saving...") : editingId ? t("Update entry") : t("Save wellness entry")}
               </button>
             </div>
           </form>

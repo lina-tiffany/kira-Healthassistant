@@ -1,3 +1,4 @@
+import { useLanguage } from "./i18n";
 import { useEffect, useState } from "react";
 import { Pill, Plus, Trash2, Pencil, Clock, CheckCircle } from "lucide-react";
 import api from "./api";
@@ -21,6 +22,7 @@ function listOf(response) {
 }
 
 export default function MedicationManager() {
+  const { t } = useLanguage();
   const [medications, setMedications] = useState([]);
   const [reminders, setReminders] = useState([]);
   const [adherence, setAdherence] = useState({});
@@ -158,9 +160,9 @@ export default function MedicationManager() {
     <section className="medication-page">
       <div className="medication-heading">
         <div>
-          <span className="eyebrow">MEDICATION MANAGEMENT</span>
-          <h2>My medications</h2>
-          <p>Manage prescriptions and keep track of your doses.</p>
+          <span className="eyebrow">{t('MEDICATION MANAGEMENT')}</span>
+          <h2>{t('My medications')}</h2>
+          <p>{t('Manage prescriptions and keep track of your doses.')}</p>
         </div>
         <button className="med-primary-button" onClick={() => {
           resetForm();
@@ -176,11 +178,11 @@ export default function MedicationManager() {
           <strong>{loading ? "—" : medications.filter(m => m.is_active).length}</strong>
         </div>
         <div>
-          <span>Doses recorded</span>
+          <span>{t('Doses recorded')}</span>
           <strong>{adherence.total ?? "—"}</strong>
         </div>
         <div>
-          <span>Adherence</span>
+          <span>{t('Adherence')}</span>
           <strong>{adherence.adherence_percentage ?? 0}%</strong>
         </div>
       </div>
@@ -222,7 +224,7 @@ export default function MedicationManager() {
             </label>
           </div>
           <div className="medication-form-actions">
-            <button type="button" className="med-secondary-button" onClick={resetForm}>Cancel</button>
+            <button type="button" className="med-secondary-button" onClick={resetForm}>{t('Cancel')}</button>
             <button className="med-primary-button" disabled={saving}>
               {saving ? "Saving..." : "Save medication"}
             </button>
@@ -231,16 +233,16 @@ export default function MedicationManager() {
       )}
 
       <div className="medication-list-heading">
-        <h3>Medication list</h3>
+        <h3>{t('Medication list')}</h3>
         <span>{medications.length} records</span>
       </div>
 
-      {loading ? <p className="empty-state">Loading medications...</p> :
+      {loading ? <p className="empty-state">{t('Loading medications...')}</p> :
         medications.length === 0 ? (
           <div className="medication-empty">
             <Pill size={30} />
-            <strong>No medications added yet</strong>
-            <p>Add a medication to begin managing your treatment plan.</p>
+            <strong>{t('No medications added yet')}</strong>
+            <p>{t('Add a medication to begin managing your treatment plan.')}</p>
           </div>
         ) : (
           <div className="medication-cards">

@@ -24,8 +24,10 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import { useLanguage } from "./i18n";
 
 function App() {
+  const { language, changeLanguage, t } = useLanguage();
   const { data, loading, error } = useDashboardData();
   const [activePage, setActivePage] = useState("Overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -115,7 +117,7 @@ function App() {
           </button>
         </div>
 
-        <div className="nav-heading">MENU</div>
+        <div className="nav-heading">{t("MENU")}</div>
         <nav>
           {navigation.map(({ label, icon: Icon }) => (
             <button
@@ -127,7 +129,7 @@ function App() {
               }}
             >
               <Icon size={19} />
-              <span>{label}</span>
+              <span>{t(label)}</span>
               {label === "Notifications" && unreadCount > 0 && (
                 <span className="nav-unread-count">
                   {unreadCount > 99 ? "99+" : unreadCount}
@@ -138,16 +140,29 @@ function App() {
         </nav>
 
         <div className="sidebar-bottom">
+          <div className="language-selector">
+            <label htmlFor="kira-language">{t("Language")}</label>
+            <select
+              id="kira-language"
+              value={language}
+              onChange={(event) => changeLanguage(event.target.value)}
+              aria-label={t("Language")}
+            >
+              <option value="en">English</option>
+              <option value="fr">Français</option>
+              <option value="rw">Kinyarwanda</option>
+            </select>
+          </div>
           <div className="secure-note">
             <ShieldCheck size={20} />
             <div>
-              <strong>Your health matters</strong>
-              <span>Your health information is private.</span>
+              <strong>{t("Your health matters")}</strong>
+              <span>{t("Your health information is private.")}</span>
             </div>
           </div>
           <button className="nav-item">
             <Settings size={19} />
-            <span>Settings</span>
+            <span>{t("Settings")}</span>
           </button>
           <button className="nav-item" onClick={() => {
             localStorage.removeItem("kira_access_token");
@@ -155,7 +170,7 @@ function App() {
             window.location.reload();
           }}>
             <LogOut size={19} />
-            <span>Sign out</span>
+            <span>{t("Sign out")}</span>
           </button>
         </div>
       </aside>
@@ -176,7 +191,7 @@ function App() {
           >
             <Menu />
           </button>
-          <div className="breadcrumb">Patient portal / {activePage}</div>
+          <div className="breadcrumb">{t("Patient portal")} / {t(activePage)}</div>
           <div className="topbar-actions">
             <button
               className="topbar-notification"

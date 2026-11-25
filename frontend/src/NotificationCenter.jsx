@@ -13,6 +13,7 @@ import {
   Inbox,
 } from "lucide-react";
 import api from "./api";
+import { useLanguage } from "./i18n";
 
 const categories = [
   { value: "all", label: "All" },
@@ -31,13 +32,15 @@ const categoryIcons = {
   general: Bell,
 };
 
-function formatDate(value) {
+function formatDate(value, language) {
   if (!value) return "";
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) return "";
 
-  return date.toLocaleString(undefined, {
+  const locales = { en: "en-GB", fr: "fr-FR", rw: "rw-RW" };
+
+  return date.toLocaleString(locales[language] || "en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -47,6 +50,7 @@ function formatDate(value) {
 }
 
 function NotificationCenter({ onUnreadChange }) {
+  const { t, language } = useLanguage();
   const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
@@ -68,11 +72,11 @@ function NotificationCenter({ onUnreadChange }) {
 
       setNotifications(results);
     } catch {
-      setError("We couldn't load your notifications. Please try again.");
+      setError(t("We couldn't load your notifications. Please try again."));
     } finally {
       setLoading(false);
     }
-  }, [filter]);
+  }, [filter, t]);
 
   const refreshUnread = useCallback(async () => {
     try {
@@ -101,7 +105,7 @@ function NotificationCenter({ onUnreadChange }) {
       );
       refreshUnread();
     } catch {
-      setError("Unable to update this notification.");
+      setError(t("Unable to update this notification."));
     }
   }
 
@@ -115,7 +119,7 @@ function NotificationCenter({ onUnreadChange }) {
       );
       refreshUnread();
     } catch {
-      setError("Unable to mark notifications as read.");
+      setError(t("Unable to mark notifications as read."));
     } finally {
       setWorking(false);
     }
@@ -131,7 +135,7 @@ function NotificationCenter({ onUnreadChange }) {
       );
       refreshUnread();
     } catch {
-      setError("Unable to delete this notification.");
+      setError(t("Unable to delete this notification."));
     } finally {
       setWorking(false);
     }
@@ -143,12 +147,12 @@ function NotificationCenter({ onUnreadChange }) {
     <section className="notification-center">
       <div className="notification-toolbar">
         <div>
-          <span className="notification-eyebrow">STAY INFORMED</span>
-          <h2>Your notifications</h2>
+          <span className="notification-eyebrow">{t("STAY INFORMED")}</span>
+          <h2>{t("Your notifications")}</h2>
           <p>
             {unreadCount
-              ? `${unreadCount} unread notification${unreadCount === 1 ? "" : "s"}`
-              : "You're all caught up."}
+              ? `${unreadCount} ${t(unreadCount === 1 ? "unread notification" : "unread notifications")}`
+              : t("You're all caught up.")}
           </p>
         </div>
 
@@ -157,10 +161,10 @@ function NotificationCenter({ onUnreadChange }) {
             className="notification-action"
             onClick={loadNotifications}
             disabled={loading}
-            title="Refresh notifications"
+            title={t("Refresh notifications")}
           >
             <RefreshCw size={16} />
-            Refresh
+            {t("Refresh")}
           </button>
 
           <button
@@ -169,7 +173,7 @@ function NotificationCenter({ onUnreadChange }) {
             disabled={working || unreadCount === 0}
           >
             <CheckCheck size={16} />
-            Mark all as read
+            {t("Mark all as read")}
           </button>
         </div>
       </div>
@@ -183,7 +187,7 @@ function NotificationCenter({ onUnreadChange }) {
             }`}
             onClick={() => setFilter(category.value)}
           >
-            {category.label}
+            {t(category.label)}
           </button>
         ))}
       </div>
@@ -193,17 +197,16 @@ function NotificationCenter({ onUnreadChange }) {
       {loading ? (
         <div className="notification-empty">
           <RefreshCw size={25} />
-          <p>Loading your notifications...</p>
+          <p>{t("Loading your notifications...")}</p>
         </div>
       ) : notifications.length === 0 ? (
         <div className="notification-empty">
           <div className="notification-empty-icon">
             <Inbox size={30} />
           </div>
-          <h3>No notifications yet</h3>
+          <h3>{t("No notifications yet")}</h3>
           <p>
-            When you receive medication reminders, appointment updates, or
-            health alerts, they'll appear here.
+            {t("When you receive medication reminders, appointment updates, or health alerts, they'll appear here.")}
           </p>
         </div>
       ) : (
@@ -234,7 +237,7 @@ function NotificationCenter({ onUnreadChange }) {
 
                   <span className="notification-date">
                     <Clock size={13} />
-                    {formatDate(item.created_at)}
+                    {formatDate(item.created_at, language)}
                   </span>
                 </div>
 
@@ -242,16 +245,16 @@ function NotificationCenter({ onUnreadChange }) {
                   {!item.is_read && (
                     <button
                       onClick={() => markAsRead(item.id)}
-                      title="Mark as read"
-                      aria-label="Mark as read"
+                      title={t("Mark as read")}
+                      aria-label={t("Mark as read")}
                     >
                       <Check size={17} />
                     </button>
                   )}
                   <button
                     onClick={() => deleteNotification(item.id)}
-                    title="Delete notification"
-                    aria-label="Delete notification"
+                    title={t("Delete notification")}
+                    aria-label={t("Delete notification")}
                   >
                     <Trash2 size={17} />
                   </button>

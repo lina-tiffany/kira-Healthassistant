@@ -4,6 +4,7 @@ import {
   Download, X, FolderOpen
 } from "lucide-react";
 import api from "./api";
+import { useLanguage } from "./i18n";
 
 const emptyForm = {
   record_type: "medical_history",
@@ -34,6 +35,7 @@ function getList(response) {
 }
 
 export default function HealthRecords() {
+  const { t } = useLanguage();
   const [records, setRecords] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [attachment, setAttachment] = useState(null);
@@ -55,7 +57,7 @@ export default function HealthRecords() {
       const response = await api.get("/health-records/", { params });
       setRecords(getList(response));
     } catch (error) {
-      setMessage("Unable to load health records.");
+      setMessage(t("Unable to load health records."));
     } finally {
       setLoading(false);
     }
@@ -113,10 +115,10 @@ export default function HealthRecords() {
 
       if (editing) {
         await api.patch(`/health-records/${editing}/`, payload);
-        setMessage("Health record updated successfully.");
+        setMessage(t("Health record updated successfully."));
       } else {
         await api.post("/health-records/", payload);
-        setMessage("Health record saved successfully.");
+        setMessage(t("Health record saved successfully."));
       }
 
       setShowForm(false);
@@ -127,7 +129,7 @@ export default function HealthRecords() {
     } catch (error) {
       const details = error.response?.data;
       setMessage(
-        details ? JSON.stringify(details) : "Could not save this health record."
+        details ? JSON.stringify(details) : t("Could not save this health record.")
       );
     } finally {
       setSaving(false);
@@ -135,19 +137,19 @@ export default function HealthRecords() {
   }
 
   async function deleteRecord(id) {
-    if (!window.confirm("Delete this health record permanently?")) return;
+    if (!window.confirm(t("Delete this health record permanently?"))) return;
 
     try {
       await api.delete(`/health-records/${id}/`);
-      setMessage("Health record deleted.");
+      setMessage(t("Health record deleted."));
       await loadRecords();
     } catch {
-      setMessage("Could not delete this health record.");
+      setMessage(t("Could not delete this health record."));
     }
   }
 
   function recordLabel(type) {
-    return recordTypes.find(item => item[0] === type)?.[1] || "Other";
+    return t(recordTypes.find(item => item[0] === type)?.[1] || "Other");
   }
 
   function openAttachment(url) {
@@ -162,9 +164,9 @@ export default function HealthRecords() {
     <section className="health-records-page">
       <div className="health-records-heading">
         <div>
-          <span className="eyebrow">PERSONAL HEALTH LIBRARY</span>
-          <h2>Health records</h2>
-          <p>Keep your important medical information organized in one place.</p>
+          <span className="eyebrow">{t("PERSONAL HEALTH LIBRARY")}</span>
+          <h2>{t("Health records")}</h2>
+          <p>{t("Keep your important medical information organized in one place.")}</p>
         </div>
         <button className="hr-primary-button" onClick={openNewForm}>
           <Plus size={17} /> Add health record
@@ -175,14 +177,14 @@ export default function HealthRecords() {
         <div className="hr-overview-icon"><FolderOpen size={23} /></div>
         <div>
           <strong>{records.length} records displayed</strong>
-          <p>Your diagnoses, medical history, prescriptions and documents.</p>
+          <p>{t("Your diagnoses, medical history, prescriptions and documents.")}</p>
         </div>
       </div>
 
       {message && (
         <div className="hr-message">
           <span>{message}</span>
-          <button onClick={() => setMessage("")} aria-label="Dismiss">
+          <button onClick={() => setMessage("")} aria-label={t("Dismiss")}>
             <X size={16} />
           </button>
         </div>
@@ -193,9 +195,9 @@ export default function HealthRecords() {
           <div className="hr-form-heading">
             <div>
               <h3>{editing ? "Edit health record" : "Add a health record"}</h3>
-              <p>Enter the information from your medical document or consultation.</p>
+              <p>{t("Enter the information from your medical document or consultation.")}</p>
             </div>
-            <button type="button" onClick={() => setShowForm(false)} aria-label="Close">
+            <button type="button" onClick={() => setShowForm(false)} aria-label={t("Close")}>
               <X size={19} />
             </button>
           </div>
@@ -205,7 +207,7 @@ export default function HealthRecords() {
               Record type *
               <select name="record_type" value={form.record_type} onChange={updateField} required>
                 {recordTypes.map(([value, label]) => (
-                  <option value={value} key={value}>{label}</option>
+                  <option value={value} key={value}>{t(label)}</option>
                 ))}
               </select>
             </label>
@@ -238,7 +240,7 @@ export default function HealthRecords() {
                 name="doctor_name"
                 value={form.doctor_name}
                 onChange={updateField}
-                placeholder="Healthcare professional"
+                placeholder={t("Healthcare professional")}
               />
             </label>
 
@@ -248,7 +250,7 @@ export default function HealthRecords() {
                 name="healthcare_facility"
                 value={form.healthcare_facility}
                 onChange={updateField}
-                placeholder="Hospital, clinic or laboratory"
+                placeholder={t("Hospital, clinic or laboratory")}
               />
             </label>
 
@@ -259,7 +261,7 @@ export default function HealthRecords() {
                 value={form.description}
                 onChange={updateField}
                 rows="3"
-                placeholder="Additional information about this record..."
+                placeholder={t("Additional information about this record...")}
               />
             </label>
 
@@ -270,7 +272,7 @@ export default function HealthRecords() {
                 value={form.diagnosis}
                 onChange={updateField}
                 rows="3"
-                placeholder="Diagnosis details, if applicable"
+                placeholder={t("Diagnosis details, if applicable")}
               />
             </label>
 
@@ -281,16 +283,16 @@ export default function HealthRecords() {
                 value={form.treatment}
                 onChange={updateField}
                 rows="3"
-                placeholder="Treatment or medication details"
+                placeholder={t("Treatment or medication details")}
               />
             </label>
 
             <label className="hr-wide hr-file-field">
-              <span>Attach a document</span>
+              <span>{t("Attach a document")}</span>
               <div className="hr-upload-area">
                 <Upload size={22} />
                 <strong>{attachment ? attachment.name : "Choose a file to upload"}</strong>
-                <small>PDF, images or other supported document formats</small>
+                <small>{t("PDF, images or other supported document formats")}</small>
                 <input
                   type="file"
                   accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx"
@@ -298,7 +300,7 @@ export default function HealthRecords() {
                 />
               </div>
               {editing && !attachment && (
-                <small>Leave empty to keep the existing attachment.</small>
+                <small>{t("Leave empty to keep the existing attachment.")}</small>
               )}
             </label>
           </div>
@@ -324,29 +326,29 @@ export default function HealthRecords() {
           <input
             value={search}
             onChange={event => setSearch(event.target.value)}
-            placeholder="Search health records..."
+            placeholder={t("Search health records...")}
           />
         </div>
         <select value={filterType} onChange={event => setFilterType(event.target.value)}>
-          <option value="">All record types</option>
+          <option value="">{t("All record types")}</option>
           {recordTypes.map(([value, label]) => (
-            <option value={value} key={value}>{label}</option>
+            <option value={value} key={value}>{t(label)}</option>
           ))}
         </select>
       </div>
 
       <div className="hr-list-heading">
-        <h3>Medical history</h3>
+        <h3>{t("Medical history")}</h3>
         <span>{records.length} records</span>
       </div>
 
       {loading ? (
-        <div className="hr-empty">Loading health records...</div>
+        <div className="hr-empty">{t("Loading health records...")}</div>
       ) : records.length === 0 ? (
         <div className="hr-empty">
           <FileText size={34} />
-          <strong>No health records found</strong>
-          <p>Add a medical record or adjust your search filters.</p>
+          <strong>{t("No health records found")}</strong>
+          <p>{t("Add a medical record or adjust your search filters.")}</p>
           <button className="hr-primary-button" onClick={openNewForm}>
             <Plus size={16} /> Add first record
           </button>
@@ -373,10 +375,10 @@ export default function HealthRecords() {
                 </div>
 
                 {record.diagnosis && (
-                  <div className="hr-record-detail"><strong>Diagnosis:</strong> {record.diagnosis}</div>
+                  <div className="hr-record-detail"><strong>{t("Diagnosis:")}</strong> {record.diagnosis}</div>
                 )}
                 {record.treatment && (
-                  <div className="hr-record-detail"><strong>Treatment:</strong> {record.treatment}</div>
+                  <div className="hr-record-detail"><strong>{t("Treatment:")}</strong> {record.treatment}</div>
                 )}
 
                 <div className="hr-record-actions">
@@ -399,8 +401,7 @@ export default function HealthRecords() {
       )}
 
       <p className="hr-disclaimer">
-        Keep your medical documents secure. KIRA organizes your records but does not
-        replace professional medical advice.
+        {t("Keep your medical documents secure. KIRA organizes your records but does not replace professional medical advice.")}
       </p>
     </section>
   );
