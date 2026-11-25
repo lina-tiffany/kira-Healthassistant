@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 
 from decouple import config
+import dj_database_url
 
 
 # ============================================================
@@ -35,6 +36,10 @@ ALLOWED_HOSTS = config(
         host.strip() for host in value.split(",") if host.strip()
     ],
 )
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # ============================================================
@@ -79,6 +84,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -130,33 +136,41 @@ ASGI_APPLICATION = "config.asgi.application"
 # DATABASE CONFIGURATION
 # ============================================================
 
-DB_ENGINE = config("DB_ENGINE", default="sqlite")
+DATABASE_URL = config("DATABASE_URL", default="")
 
-if DB_ENGINE == "postgresql":
+if DATABASE_URL:
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": config("DB_NAME"),
-            "USER": config("DB_USER"),
-            "PASSWORD": config("DB_PASSWORD"),
-            "HOST": config("DB_HOST", default="localhost"),
-            "PORT": config("DB_PORT", default="5432"),
-            "CONN_MAX_AGE": 60,
-            "OPTIONS": {
-                "connect_timeout": 10,
-            },
-        }
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=not DEBUG,
+        )
     }
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+    DB_ENGINE = config("DB_ENGINE", default="sqlite")
+
+    if DB_ENGINE == "postgresql":
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": config("DB_NAME"),
+                "USER": config("DB_USER"),
+                "PASSWORD": config("DB_PASSWORD"),
+                "HOST": config("DB_HOST", default="localhost"),
+                "PORT": config("DB_PORT", default="5432"),
+                "CONN_MAX_AGE": 60,
+                "OPTIONS": {"connect_timeout": 10},
+            }
         }
-    }
+    else:
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": BASE_DIR / "db.sqlite3",
+            }
+        }
 
 
-# ============================================================
 # PASSWORD VALIDATION
 # ============================================================
 
@@ -215,6 +229,15 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -295,6 +318,14 @@ CORS_ALLOWED_ORIGINS = config(
     ],
 )
 
+CSRF_TRUSTED_ORIGINS = config(
+    "CSRF_TRUSTED_ORIGINS",
+    default="http://localhost:5173",
+    cast=lambda value: [
+        origin.strip() for origin in value.split(",") if origin.strip()
+    ],
+)
+
 CORS_ALLOW_CREDENTIALS = True
 
 
@@ -308,6 +339,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 
 if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
